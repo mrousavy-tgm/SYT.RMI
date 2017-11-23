@@ -20,7 +20,7 @@ public class Fibonacci implements Task<BigDecimal>, Serializable {
     }
 
     /**
-     * Calculate fibonacci.
+     * Calculate fibonacci's number.
      */
     public BigDecimal execute() {
         return computeFib(count);
