@@ -31,6 +31,7 @@
 
 package server;
 
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -59,8 +60,11 @@ public class ComputeEngine implements Compute {
         if (port < 0) throw new IllegalArgumentException("port");
         if (System.getSecurityManager() == null) throw new SecurityManagerException("Security Manager cannot be null!");
 
-        Compute stub = (Compute) UnicastRemoteObject.exportObject(this, port);
-        Registry registry = LocateRegistry.createRegistry(1099);
+        stub = (Compute) UnicastRemoteObject.exportObject(this, port);
+        registry = LocateRegistry.createRegistry(1099);
+        try {
+            registry.unbind(name);
+        } catch (NotBoundException ignored) { }
         registry.rebind(name, stub);
     }
 
