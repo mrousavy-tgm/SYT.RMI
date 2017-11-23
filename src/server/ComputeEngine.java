@@ -29,8 +29,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */ 
 
-package engine;
+package server;
 
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
@@ -47,21 +48,17 @@ public class ComputeEngine implements Compute {
         return t.execute();
     }
 
-    public static void main(String[] args) {
-        if (System.getSecurityManager() == null) {
-            System.setSecurityManager(new SecurityManager());
-        }
+    public void start(String name, int port) throws IllegalArgumentException, RemoteException, SecurityManagerException {
+        if (name == null || name.length() < 1) throw new IllegalArgumentException("name");
+        if (port < 0) throw new IllegalArgumentException("port");
+        if (System.getSecurityManager() == null) throw new SecurityManagerException("Security Manager cannot be null!");
+
         try {
-            String name = "Compute";
-            Compute engine = new ComputeEngine();
-            Compute stub =
-                (Compute) UnicastRemoteObject.exportObject(engine, 0);
+            Compute stub = (Compute) UnicastRemoteObject.exportObject(this, port);
             Registry registry = LocateRegistry.createRegistry(1099);
             registry.rebind(name, stub);
-            System.out.println("ComputeEngine bound");
-        } catch (Exception e) {
-            System.err.println("ComputeEngine exception:");
-            e.printStackTrace();
+        } catch (java.rmi.RemoteException ex) {
+            throw ex;
         }
     }
 }
