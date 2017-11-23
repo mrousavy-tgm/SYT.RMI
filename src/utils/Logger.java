@@ -1,8 +1,4 @@
-import java.io.PrintStream;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.stream.Stream;
-
+package utils;
 
 public interface Logger<T> {
     void Log(Severity severity, T message);
