@@ -30,8 +30,12 @@ public class Main {
     public static void main(String[] args) {
         Logger<String> logger = new JLogger(System.out);
 
-        String name = "Compute";
-        int port = 1099;
+        if (args.length != 3) {
+            logger.Log(Logger.Severity.Error, "Invalid Arguments specified! arg[0] = Name, arg[1] = Port, arg[2] = ComputeType");
+        }
+
+        String name = args[0];
+        int port = Integer.parseInt(args[1]);
         ComputeType type = ComputeType.Fibonacci;
 
         try {

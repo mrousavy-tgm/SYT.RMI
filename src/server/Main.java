@@ -21,7 +21,8 @@ public class Main {
         try {
             engine.start();
             logger.Log(Logger.Severity.Info, "Compute Engine successfully bound to port " + port + ", with name \"" + name + "\"");
-            engine.stop();
+
+            Thread.sleep(10000);    // wait
         } catch (SecurityManagerException ex) {
             logger.Log(Logger.Severity.Error, "Invalid Security Manager! " + ex.getMessage());
             ex.printStackTrace();
@@ -34,6 +35,18 @@ public class Main {
         } catch (NotBoundException ex) {
             logger.Log(Logger.Severity.Error, "Engine was not bound, stopping failed! " + ex.getMessage());
             ex.printStackTrace();
+        } catch (InterruptedException ex) {
+            logger.Log(Logger.Severity.Error, "Engine was not bound, stopping failed! " + ex.getMessage());
+            ex.printStackTrace();
+        } finally {
+            try {
+                engine.stop();
+                logger.Log(Logger.Severity.Info, "Compute Engine stopped.");
+            } catch (NotBoundException e) {
+                e.printStackTrace();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
