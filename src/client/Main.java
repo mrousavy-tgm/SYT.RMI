@@ -16,15 +16,10 @@ public class Main {
         Logger<String> logger = new JLogger(System.out);
 
         String name = "Compute";
-        int port = 0;
-        try {
-            port = Integer.parseInt(args[0]);
-        } catch (Exception ex) {
-
-        }
+        int port = 1099;
 
         try {
-            Registry registry = LocateRegistry.getRegistry(args[0]);
+            Registry registry = LocateRegistry.getRegistry(port);
             Compute comp = (Compute) registry.lookup(name);
             Fibonacci task = new Fibonacci(Integer.parseInt(args[1]));
             BigDecimal fib = comp.executeTask(task);
