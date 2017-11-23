@@ -39,26 +39,32 @@ import compute.Compute;
 import compute.Task;
 
 public class ComputeEngine implements Compute {
+    private Compute stub;
+    private Registry registry;
+    private String name;
+    private int port;
 
-    public ComputeEngine() {
+    public ComputeEngine(String name, int port) {
         super();
+        this.name = name;
+        this.port = port;
     }
 
     public <T> T executeTask(Task<T> t) {
         return t.execute();
     }
 
-    public void start(String name, int port) throws IllegalArgumentException, RemoteException, SecurityManagerException {
+    public void start() throws IllegalArgumentException, RemoteException, SecurityManagerException {
         if (name == null || name.length() < 1) throw new IllegalArgumentException("name");
         if (port < 0) throw new IllegalArgumentException("port");
         if (System.getSecurityManager() == null) throw new SecurityManagerException("Security Manager cannot be null!");
 
-        try {
-            Compute stub = (Compute) UnicastRemoteObject.exportObject(this, port);
-            Registry registry = LocateRegistry.createRegistry(1099);
-            registry.rebind(name, stub);
-        } catch (java.rmi.RemoteException ex) {
-            throw ex;
-        }
+        Compute stub = (Compute) UnicastRemoteObject.exportObject(this, port);
+        Registry registry = LocateRegistry.createRegistry(1099);
+        registry.rebind(name, stub);
+    }
+
+    public void stop() throws java.rmi.NotBoundException, java.rmi.RemoteException {
+        registry.unbind(this.name);
     }
 }
