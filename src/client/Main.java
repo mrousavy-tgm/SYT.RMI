@@ -32,6 +32,7 @@ public class Main {
 
         if (args.length != 3) {
             logger.Log(Logger.Severity.Error, "Invalid Arguments specified! arg[0] = Name, arg[1] = Port, arg[2] = ComputeType");
+            return;
         }
 
         String name = args[0];

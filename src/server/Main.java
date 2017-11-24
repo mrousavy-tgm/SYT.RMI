@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
         Logger<String> logger = new JLogger(System.out);
 
-        int port = 0;
+        int port = 1099;
         String name = "Compute";
         ComputeEngine engine = new ComputeEngine(name, port);
 
@@ -32,20 +32,19 @@ public class Main {
         } catch (RemoteException ex) {
             logger.Log(Logger.Severity.Error, "Java RMI Remote Exception! " + ex.getMessage());
             ex.printStackTrace();
-        } catch (NotBoundException ex) {
-            logger.Log(Logger.Severity.Error, "Engine was not bound, stopping failed! " + ex.getMessage());
-            ex.printStackTrace();
         } catch (InterruptedException ex) {
-            logger.Log(Logger.Severity.Error, "Engine was not bound, stopping failed! " + ex.getMessage());
+            logger.Log(Logger.Severity.Error, "Thread interrupted exception!! " + ex.getMessage());
             ex.printStackTrace();
         } finally {
             try {
                 engine.stop();
                 logger.Log(Logger.Severity.Info, "Compute Engine stopped.");
-            } catch (NotBoundException e) {
-                e.printStackTrace();
-            } catch (RemoteException e) {
-                e.printStackTrace();
+            } catch (NotBoundException ex) {
+                logger.Log(Logger.Severity.Error, "Engine was not bound, stopping failed! " + ex.getMessage());
+                ex.printStackTrace();
+            } catch (RemoteException ex) {
+                logger.Log(Logger.Severity.Error, "Java RMI Remote Exception! " + ex.getMessage());
+                ex.printStackTrace();
             }
         }
     }

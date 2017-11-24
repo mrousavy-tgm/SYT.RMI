@@ -60,8 +60,8 @@ public class ComputeEngine implements Compute {
         if (port < 0) throw new IllegalArgumentException("port");
         if (System.getSecurityManager() == null) throw new SecurityManagerException("Security Manager cannot be null!");
 
-        stub = (Compute) UnicastRemoteObject.exportObject(this, port);
-        registry = LocateRegistry.createRegistry(1099);
+        stub = (Compute) UnicastRemoteObject.exportObject(this, 0);
+        registry = LocateRegistry.createRegistry(port);
         try {
             registry.unbind(name);
         } catch (NotBoundException ignored) { }
