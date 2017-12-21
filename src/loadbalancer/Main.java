@@ -10,24 +10,24 @@ public class Main {
         int START_PORT = 2099;
         Logger<String> logger = new JLogger(System.out);
         Proxy balancer = new LoadBalancer();
-        if (System.getSecurityManager() == null) {
+        if (System.getSecurityManager() == null)
             System.setSecurityManager(new SecurityManager());
-        }
 
         for (int i = 0; i < 4; i++) {
             String name = "Compute" + i;
             int port = START_PORT + i;
-            ComputeServer server = new ComputeServer(name, port); // Create a new server
-            logger.Log(Logger.Severity.Info, "Created Server in registry with name \"" + name + "\" at " + port);
+            ComputeServer server = null;
 
             try {
-                balancer.register(server); // Register it to the proxy
+                server = new ComputeServer(name, port); // Create a new server
+                logger.Log(Logger.Severity.Info, "Created Server in registry with name \"" + name + "\" at " + port);
                 server.start(); // Start the server
                 logger.Log(Logger.Severity.Info, "\"" + name + "\" started and registered.");
             } catch(Exception ex) {
                 logger.Log(Logger.Severity.Error, "Could not start or register \"" + name + "\"! " + ex.getMessage());
                 try {
-                    server.stop();
+                    if (server != null)
+                        server.stop();
                 } catch(Exception iex) {
                     // can't even stop wtf happened
                     logger.Log(Logger.Severity.Error, "Could not stop \"" + name + "\"! " + ex.getMessage());

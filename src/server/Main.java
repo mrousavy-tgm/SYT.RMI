@@ -13,7 +13,12 @@ public class Main {
 
         int port = 1099;
         String name = "Compute";
-        ComputeServer server = new ComputeServer(name, port);
+        ComputeServer server = null;
+        try {
+            server = new ComputeServer(name, port);
+        } catch (Exception e) {
+            logger.Log(Logger.Severity.Error, "Could not create Compute Server!: " + e.getMessage());
+        }
 
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new SecurityManager());

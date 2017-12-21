@@ -11,9 +11,13 @@ public class LoadBalancer implements Proxy {
     private int _current;
     private Registry _registry;
 
-    public LoadBalancer() throws RemoteException {
+    public LoadBalancer() {
         _current = 0;
-        _registry = LocateRegistry.createRegistry(2017);
+        try {
+            _registry = LocateRegistry.createRegistry(2017);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
