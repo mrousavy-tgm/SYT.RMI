@@ -13,13 +13,13 @@ public class Main {
 
         int port = 1099;
         String name = "Compute";
-        ComputeEngine engine = new ComputeEngine(name, port);
+        ComputeServer server = new ComputeServer(name, port);
 
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new SecurityManager());
         }
         try {
-            engine.start();
+            server.start();
             logger.Log(Logger.Severity.Info, "Compute Engine successfully bound to port " + port + ", with name \"" + name + "\"");
 
             Thread.sleep(10000);    // wait
@@ -37,7 +37,7 @@ public class Main {
             ex.printStackTrace();
         } finally {
             try {
-                engine.stop();
+                server.stop();
                 logger.Log(Logger.Severity.Info, "Compute Engine stopped.");
             } catch (NotBoundException ex) {
                 logger.Log(Logger.Severity.Error, "Engine was not bound, stopping failed! " + ex.getMessage());

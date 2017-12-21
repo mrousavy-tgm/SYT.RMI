@@ -38,17 +38,20 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import compute.Compute;
 import compute.Task;
+import loadbalancer.LoadBalancer;
 
-public class ComputeEngine implements Compute {
+public class ComputeServer implements Compute {
     private Compute stub;
     private Registry registry;
     private String name;
     private int port;
+    private LoadBalancer proxy;
 
-    public ComputeEngine(String name, int port) {
+    public ComputeServer(String name, int port) {
         super();
         this.name = name;
         this.port = port;
+        this.proxy = new LoadBalancer();
     }
 
     public <T> T executeTask(Task<T> t) {
@@ -70,5 +73,13 @@ public class ComputeEngine implements Compute {
 
     public void stop() throws java.rmi.NotBoundException, java.rmi.RemoteException {
         registry.unbind(this.name);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPort() {
+        return port;
     }
 }
