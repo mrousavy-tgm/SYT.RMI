@@ -4,13 +4,16 @@ import compute.Compute;
 import compute.Task;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 public class LoadBalancer implements Proxy {
     private int _current;
+    private Registry _registry;
 
-    public LoadBalancer() {
+    public LoadBalancer() throws RemoteException {
         _current = 0;
+        _registry = LocateRegistry.createRegistry(2017);
     }
 
     @Override

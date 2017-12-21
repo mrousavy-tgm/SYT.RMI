@@ -52,11 +52,32 @@
         <java classname="server.ComputeEngine" failonerror="true" fork="yes">
             <classpath refid="rmiTutorial.classpath"/>
         </java>
+        <java classname="server.SecurityManagerException" failonerror="true" fork="yes">
+            <classpath refid="rmiTutorial.classpath"/>
+        </java>
+        <java classname="server.Main" failonerror="true" fork="yes">
+            <classpath refid="rmiTutorial.classpath"/>
+        </java>
     </target>
-    <target depends="build" name="compute">
-        <java classname="client.ComputePi" failonerror="true" fork="yes">
-	    <arg value="localhost"/>
-	    <arg value="2000"/>
+    <target depends="build" name="client">
+        <java classname="client.Main" failonerror="true" fork="yes">
+            <classpath refid="rmiTutorial.classpath"/>
+        </java>
+        <java classname="client.Fibonacci" failonerror="true" fork="yes">
+            <classpath refid="rmiTutorial.classpath"/>
+        </java>
+        <java classname="client.Pi" failonerror="true" fork="yes">
+            <classpath refid="rmiTutorial.classpath"/>
+        </java>
+    </target>
+    <target depends="build" name="loadbalancer">
+        <java classname="loadbalancer.LoadBalancer" failonerror="true" fork="yes">
+            <classpath refid="rmiTutorial.classpath"/>
+        </java>
+        <java classname="loadbalancer.Proxy" failonerror="true" fork="yes">
+            <classpath refid="rmiTutorial.classpath"/>
+        </java>
+        <java classname="loadbalancer.Main" failonerror="true" fork="yes">
             <classpath refid="rmiTutorial.classpath"/>
         </java>
     </target>

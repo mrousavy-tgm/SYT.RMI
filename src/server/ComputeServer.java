@@ -45,13 +45,16 @@ public class ComputeServer implements Compute {
     private Registry registry;
     private String name;
     private int port;
-    private LoadBalancer proxy;
+    private LoadBalancer _proxy;
+    private Registry _registry;
 
-    public ComputeServer(String name, int port) {
+    public ComputeServer(String name, int port) throws RemoteException, NotBoundException {
         super();
         this.name = name;
         this.port = port;
-        this.proxy = new LoadBalancer();
+        _registry = LocateRegistry.getRegistry(2017);
+        _proxy = (LoadBalancer) _registry.lookup("LoadBalancer");
+        _proxy.register(this);
     }
 
     public <T> T executeTask(Task<T> t) {
