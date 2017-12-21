@@ -15,17 +15,17 @@ Der sinn eines **Stub**s ist, ein Objekt zu erstellen welches "ge-**Marshalled**
 
 ## 3. Registry
 #### a. Server
-    Registry erstellen auf Server mit
-    ```java
-    LocateRegistry.createRegistry(port);
-    ```
-    wobei der `port` der Port ist auf dem die Registry erstellt wird (wichtig!)
+Registry erstellen auf Server mit
+```java
+LocateRegistry.createRegistry(port);
+```
+wobei der `port` der Port ist auf dem die Registry erstellt wird (wichtig!)
     
 #### b. Client
-    Der Client findet die Registry mit
-    ```java
-    LocateRegistry.locateRegistry(port);
-    ```
+Der Client findet die Registry mit
+```java
+LocateRegistry.locateRegistry(port);
+```
     
 ## 4. Engine
 Nun kann die `ComputeEngine` erstellt werden
