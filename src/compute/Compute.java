@@ -35,5 +35,6 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface Compute extends Remote {
+    int START_PORT = 2017;
     <T> T executeTask(Task<T> t) throws RemoteException;
 }

@@ -1,5 +1,6 @@
 package loadbalancer;
 
+import compute.Compute;
 import server.ComputeServer;
 import utils.JLogger;
 import utils.Logger;
@@ -7,7 +8,6 @@ import utils.Logger;
 public class Main {
 
     public static void main(String[] args) {
-        int START_PORT = 2099;
         Logger<String> logger = new JLogger(System.out);
         Proxy balancer = new LoadBalancer();
         if (System.getSecurityManager() == null)
@@ -15,7 +15,7 @@ public class Main {
 
         for (int i = 0; i < 4; i++) {
             String name = "Compute" + i;
-            int port = START_PORT + i;
+            int port = Compute.START_PORT + i;
             ComputeServer server = null;
 
             try {

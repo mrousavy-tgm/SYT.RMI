@@ -44,7 +44,7 @@ public class ComputeServer implements Compute {
     private Compute stub;
     private Registry registry;
     private String name;
-    private int port;
+    private int port = Compute.START_PORT;
     private LoadBalancer _proxy;
     private Registry _registry;
 
@@ -52,7 +52,7 @@ public class ComputeServer implements Compute {
         super();
         this.name = name;
         this.port = port;
-        _registry = LocateRegistry.getRegistry(2017);
+        _registry = LocateRegistry.getRegistry(Compute.START_PORT);
         _proxy = (LoadBalancer) _registry.lookup("LoadBalancer");
         _proxy.register(this);
     }

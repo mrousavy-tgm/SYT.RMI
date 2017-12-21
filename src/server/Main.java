@@ -1,5 +1,6 @@
 package server;
 
+import compute.Compute;
 import utils.JLogger;
 import utils.Logger;
 
@@ -10,12 +11,10 @@ public class Main {
 
     public static void main(String[] args) {
         Logger<String> logger = new JLogger(System.out);
-
-        int port = 1099;
         String name = "Compute";
         ComputeServer server = null;
         try {
-            server = new ComputeServer(name, port);
+            server = new ComputeServer(name, Compute.START_PORT);
         } catch (Exception e) {
             logger.Log(Logger.Severity.Error, "Could not create Compute Server!: " + e.getMessage());
         }
@@ -25,7 +24,7 @@ public class Main {
         }
         try {
             server.start();
-            logger.Log(Logger.Severity.Info, "Compute Engine successfully bound to port " + port + ", with name \"" + name + "\"");
+            logger.Log(Logger.Severity.Info, "Compute Engine successfully bound to port " + Compute.START_PORT + ", with name \"" + name + "\"");
 
             Thread.sleep(10000);    // wait
         } catch (SecurityManagerException ex) {

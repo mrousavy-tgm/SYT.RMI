@@ -14,7 +14,7 @@ public class LoadBalancer implements Proxy {
     public LoadBalancer() {
         _current = 0;
         try {
-            _registry = LocateRegistry.createRegistry(2017);
+            _registry = LocateRegistry.createRegistry(Compute.START_PORT);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
