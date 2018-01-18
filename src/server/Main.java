@@ -12,11 +12,12 @@ public class Main {
     public static void main(String[] args) {
         Logger<String> logger = new JLogger(System.out);
         String name = "Compute";
-        ComputeServer server = null;
+        ComputeServer server;
         try {
             server = new ComputeServer(name, Compute.START_PORT);
         } catch (Exception e) {
             logger.Log(Logger.Severity.Error, "Could not create Compute Server!: " + e.getMessage());
+            return;
         }
 
         if (System.getSecurityManager() == null) {
@@ -38,6 +39,9 @@ public class Main {
             ex.printStackTrace();
         } catch (InterruptedException ex) {
             logger.Log(Logger.Severity.Error, "Thread interrupted exception!! " + ex.getMessage());
+            ex.printStackTrace();
+        } catch (NotBoundException ex) {
+            logger.Log(Logger.Severity.Error, "Error looking up Proxy, registry not bound!! " + ex.getMessage());
             ex.printStackTrace();
         } finally {
             try {
