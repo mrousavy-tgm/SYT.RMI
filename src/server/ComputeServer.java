@@ -31,6 +31,7 @@
 
 package server;
 
+import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -42,40 +43,38 @@ import loadbalancer.LoadBalancer;
 
 public class ComputeServer implements Compute {
     private Compute stub;
-    private Registry registry;
     private String name;
-    private int port = Compute.START_PORT;
+    private int port;
     private LoadBalancer _proxy;
     private Registry _registry;
 
-    public ComputeServer(String name, int port) throws RemoteException, NotBoundException {
+    public ComputeServer(String name, int port) throws RemoteException, NotBoundException, AlreadyBoundException {
         super();
         this.name = name;
         this.port = port;
-        _registry = LocateRegistry.getRegistry(Compute.START_PORT);
-        _proxy = (LoadBalancer) _registry.lookup("LoadBalancer");
-        _proxy.register(this);
     }
 
     public <T> T executeTask(Task<T> t) {
         return t.execute();
     }
 
-    public void start() throws IllegalArgumentException, RemoteException, SecurityManagerException {
+    public void start() throws IllegalArgumentException, RemoteException, SecurityManagerException, NotBoundException {
         if (name == null || name.length() < 1) throw new IllegalArgumentException("name");
         if (port < 0) throw new IllegalArgumentException("port");
         if (System.getSecurityManager() == null) throw new SecurityManagerException("Security Manager cannot be null!");
 
         stub = (Compute) UnicastRemoteObject.exportObject(this, 0);
-        registry = LocateRegistry.createRegistry(port);
+        _registry = LocateRegistry.createRegistry(port);
         try {
-            registry.unbind(name);
+            _registry.unbind(name);
         } catch (NotBoundException ignored) { }
-        registry.rebind(name, stub);
+        _registry.rebind(name, stub);
+        _proxy = (LoadBalancer) _registry.lookup("LoadBalancer");
+        _proxy.register(this);
     }
 
     public void stop() throws java.rmi.NotBoundException, java.rmi.RemoteException {
-        registry.unbind(this.name);
+        _registry.unbind(this.name);
     }
 
     public String getName() {
