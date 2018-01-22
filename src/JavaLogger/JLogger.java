@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class JLogger implements Logger<String> {
+    public static JLogger Instance = new JLogger(System.out);
+
     private PrintStream stream;
 
     public JLogger(PrintStream stream) {

@@ -9,10 +9,11 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.security.AccessControlException;
 
 public class Main {
     private static final int PORT = 1099;
-    private static Logger<String> _logger;
+    private static Logger<String> _logger = JLogger.Instance;
 
     private static void SecurityManagerCheck() {
         if (System.getSecurityManager() == null) {
@@ -35,12 +36,15 @@ public class Main {
     public static void main(String args[]) throws RemoteException {
         int port = PORT;
 
-        _logger = new JLogger(System.out);
         SecurityManagerCheck();
         Registry registry = OpenRegistry(port);
 
-        String hostname = System.getProperties().getProperty("java.rmi.server.hostname");
-        _logger.Log(Logger.Severity.Debug, "RMI running on hostname: " + hostname);
+        try {
+            String hostname = System.getProperties().getProperty("java.rmi.server.hostname");
+            _logger.Log(Logger.Severity.Debug, "RMI running on hostname: " + hostname);
+        } catch (AccessControlException ex) {
+            _logger.Log(Logger.Severity.Error, "Access denied - Could not read java.rmi.server.hostname!");
+        }
 
         try {
             _logger.Log(Logger.Severity.Debug, "Starting load balancer..");
