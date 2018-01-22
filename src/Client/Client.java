@@ -7,11 +7,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-enum TaskType {
-    Pi,
-    Fibonacci
-}
-
 /*
  * A Client object for running Tasks on the Server
  *

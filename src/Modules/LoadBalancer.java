@@ -7,5 +7,5 @@ import java.rmi.RemoteException;
  */
 public interface LoadBalancer extends Compute {
     void add(Processor processor) throws RemoteException;
-    void remove(Processor processor) throws RemoteException;
+    boolean remove(Processor processor) throws RemoteException;
 }

@@ -14,12 +14,12 @@ public class Server implements Processor {
     public Server() {}
 
     @Override
-    public boolean busy() throws RemoteException {
+    public boolean busy() {
         return _busy;
     }
 
     @Override
-    public <T> T executeTask(Task<T> task) throws RemoteException {
+    public <T> T run(Task<T> task) throws RemoteException {
         try {
             _busy = true;
             T result = task.run();

@@ -9,6 +9,11 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 public class Main {
+    enum TaskType {
+        Pi,
+        Fibonacci
+    }
+
     public static void main(String[] args) {
         Logger<String> logger = JLogger.Instance;
 
