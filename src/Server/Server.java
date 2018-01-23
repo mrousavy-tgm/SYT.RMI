@@ -2,7 +2,6 @@ package Server;
 
 import JavaLogger.JLogger;
 import JavaLogger.Logger;
-import Modules.Processor;
 import Modules.Task;
 import java.rmi.RemoteException;
 import java.util.Date;

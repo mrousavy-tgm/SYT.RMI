@@ -2,8 +2,7 @@ package Proxy;
 
 import JavaLogger.JLogger;
 import JavaLogger.Logger;
-import Modules.LoadBalancer;
-import Modules.Processor;
+import Server.Processor;
 import Modules.Task;
 
 import java.rmi.RemoteException;

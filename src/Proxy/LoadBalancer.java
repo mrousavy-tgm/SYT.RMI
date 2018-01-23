@@ -1,4 +1,7 @@
-package Modules;
+package Proxy;
+
+import Modules.Compute;
+import Server.Processor;
 
 import java.rmi.RemoteException;
 

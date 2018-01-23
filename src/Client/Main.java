@@ -2,9 +2,11 @@ package Client;
 
 import JavaLogger.JLogger;
 import JavaLogger.Logger;
+import Modules.Fibonacci;
 import Modules.Statics;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
@@ -17,7 +19,7 @@ public class Main {
     public static void main(String[] args) {
         Logger<String> logger = JLogger.Instance;
 
-        String host = null;
+        String host;
         int port = 1099;
         TaskType type = TaskType.Fibonacci;
         try {
@@ -30,11 +32,11 @@ public class Main {
             throw new IllegalArgumentException("Invalid program args!");
         }
 
-        Client client;
         try {
-            client = new Client(host);
-            BigDecimal fib = client.runOnServer(type.toString());
-            logger.Log(Logger.Severity.Info, "Calculated Fibonacci: " + fib);
+            Client client = new Client(host, "Fibonacci");
+            Fibonacci fibonacci = new Fibonacci(5);
+            BigInteger number = client.run(fibonacci);
+            logger.Log(Logger.Severity.Info, "Calculated Fibonacci: " + number);
         } catch (RemoteException e) {
             logger.Log(Logger.Severity.Error, "Could not get registry!");
             throw new IllegalArgumentException("Hostname (arg[0]) invalid!");

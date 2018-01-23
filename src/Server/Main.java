@@ -2,7 +2,7 @@ package Server;
 
 import JavaLogger.JLogger;
 import JavaLogger.Logger;
-import Modules.LoadBalancer;
+import Proxy.LoadBalancer;
 import Modules.Statics;
 
 import java.rmi.NotBoundException;

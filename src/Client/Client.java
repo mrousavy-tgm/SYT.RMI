@@ -1,5 +1,6 @@
 package Client;
 
+import Modules.Compute;
 import Modules.Task;
 
 import java.rmi.NotBoundException;
@@ -15,16 +16,19 @@ import java.rmi.registry.Registry;
  */
 public class Client {
     private Registry _registry;
+    private Compute _compute;
 
     /*
      * Create a new Client and initialize the Registry
      *
      * @param host the given host name to get the registry from
+     * @param stubName The name of the compute stub in the registry
      * @author  Marc Rousavy
      * @version 1.0
      */
-    public Client(String host) throws RemoteException {
+    public Client(String host, String stubName) throws RemoteException, NotBoundException {
         _registry = LocateRegistry.getRegistry(host);
+        _compute = (Compute)_registry.lookup(stubName);
     }
 
     /*
@@ -34,8 +38,7 @@ public class Client {
      * @author  Marc Rousavy
      * @version 1.0
      */
-    public <T> T runOnServer(String stubName) throws RemoteException, NotBoundException {
-        Task<T> task = (Task<T>)_registry.lookup(stubName);
-        return task.run();
+    public <T> T run(Task<T> task) throws RemoteException {
+        return _compute.run(task);
     }
 }
