@@ -221,6 +221,30 @@ public boolean remove(Processor processor) throws RemoteException {
     return success;
 }
 \end{lstlisting}
+
+Und nun kann die \textbf{run()} Methode des Proxy implementiert werden, welche auch nur den Task einem Server weitergibt;
+
+\begin{lstlisting}[style=Java, caption=Proxy Implementation - Proxy::run]
+@Override
+public <T> T run(Task<T> t) throws RemoteException {
+    do {
+        if (_iter.hasNext())
+            _iter = _processors.iterator();
+
+        Processor p = _iter.next();
+        if (!p.busy()) {
+            return p.run(t);
+        }
+    } while(true);
+}
+\end{lstlisting}
+
+Der Iterator wird überprüft ob er am Ende angelangt ist, falls dies der Fall ist, wird er zurückgesetzt.
+Danach wird ein Prozessor (Server) aus der Liste geholt, und der Iterator weitergeschoben.
+Falls dieser Prozessor nicht gerade beschäftigt ist, kann der Task an den Prozessor weitergereicht werden, und auf ein Ergebnis gewartet werden.
+
+Der Proxy kann auch so konfiguriert werden, dass er den Prozessoren unabhängig davon ob sie beschäftigt sind oder nicht, die Tasks weitergibt, wodurch aber viel beschäftigte Server eine Lange Arbeitskette (Task Queue/Stack) haben könnten.
+
 \subsection{Glossar}
 \begin{enumerate}
     \item \href{https://www.jetbrains.com/idea}{\color{blue}\underline{''IntelliJ IDEA - JetBrains''}}
