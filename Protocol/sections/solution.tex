@@ -150,7 +150,7 @@ Der Interface definiert nur eine Funktion: \textbf{busy()}, welche einen boolean
 
 Der Server ist die Implementierung der \textbf{Processor} Klasse, welche eine \textbf{run()} Methode besitzt um einen beliebigen Task<T> auszuführen, und das Ergebnis zurück zu liefern.
 
-Für die \textbf{busy()} Methode wird eine Variable namens \textbf{_busy} gespeichert, welche besagt, ob der Server gerade beschäftigt ist oder nicht.
+Für die \textbf{busy()} Methode wird eine Variable namens \textbf{busy} gespeichert, welche besagt, ob der Server gerade beschäftigt ist oder nicht.
 
 \begin{lstlisting}[style=Java, caption=Server Implementation - run Methode]
 @Override
@@ -193,9 +193,9 @@ Als nächstes wird das Interface in einer Klasse \textbf{"Proxy"} implementiert.
 Es werden folgende Objekt-Member erstellt:
 
 \begin{itemize}
-	\item _logger: Ein beliebiger Logger, hierbei wird er zu dem System.out Stream weitergeleitet.
-	\item _processors: Eine List<Processor> welche alle registrierten Prozessoren (Server) speichert.
-	\item _iter: Ein Iterator<Processor> zu der Liste aus Prozessoren, welcher den Fortschritt in einem Round Robin Zyklus speichert.
+	\item logger: Ein beliebiger Logger, hierbei wird er zu dem System.out Stream weitergeleitet.
+	\item processors: Eine List<Processor> welche alle registrierten Prozessoren (Server) speichert.
+	\item iter: Ein Iterator<Processor> zu der Liste aus Prozessoren, welcher den Fortschritt in einem Round Robin Zyklus speichert.
 \end{itemize}
 
 \subsection{Glossar}
