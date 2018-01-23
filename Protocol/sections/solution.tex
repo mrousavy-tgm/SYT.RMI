@@ -144,23 +144,29 @@ Fibonacci fibonacci = new Fibonacci(5);  // Fibonacci Number bis 5
 BigInteger number = client.run(fibonacci);
 \end{lstlisting}
 
-\subsection{Code}
+\subsection{Server}
+Es wird ein basis-Interface definiert, welches den Zugriff für den Proxy später vereinfachen wird. Das Interface wird \textbf{Processor} genannt, und erweitert die \textbf{Compute} Klasse. 
+Der Interface definiert nur eine Funktion: \textbf{busy()}, welche einen boolean wert zurückliefer.
 
-At vero eos et accusam et justo duo dolores et ea rebum.
+Der Server ist die Implementierung der \textbf{Processor} Klasse, welche eine \textbf{run()} Methode besitzt um einen beliebigen Task<T> auszuführen, und das Ergebnis zurück zu liefern.
 
-\begin{lstlisting}[style=Java, caption=Implizite Transaktion \cite{tanenbaum2007verteilte}]
-try{
-   gTransCur.begin();
-   //Perform the operation inside the transaction
-   not_registered = 
-       gRegistrarObjRef.register_for_courses(student_id,selected_course_numbers);
+Für die \textbf{busy()} Methode wird eine Variable namens \textbf{_busy} gespeichert, welche besagt, ob der Server gerade beschäftigt ist oder nicht.
+
+\begin{lstlisting}[style=Java, caption=Server Implementation - run Methode]
+@Override
+public <T> T run(Task<T> task) throws RemoteException {
+	try {
+    	_busy = true;
+        T result = task.run();
+        JLogger.Instance.Log(Logger.Severity.Info, "Executed Task \"" + task.toString() + "\", at " + new Date().toString());
+		return result;
+    } finally {
+    	_busy = false;
+    }
+}
+\end{lstlisting}
 
 
-   if (not_registered != null)
-
-     //If operation executes with no errors, commit the transaction
-     boolean report_heuristics = true;
-     gTransCur.commit(report_heuristics);
 
    } else gTransCur.rollback();
 
