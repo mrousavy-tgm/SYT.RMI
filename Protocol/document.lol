@@ -1,1 +1,10 @@
-\contentsline {lstlisting}{\numberline {1}Implizite Transaktion \cite {tanenbaum2007verteilte}}{2}{lstlisting.1}
+\contentsline {lstlisting}{\numberline {1}Module Implementation - Compute interface}{3}{lstlisting.1}
+\contentsline {lstlisting}{\numberline {2}Module Implementation - Task interface}{4}{lstlisting.2}
+\contentsline {lstlisting}{\numberline {3}Module Implementation - Fibonacci run}{4}{lstlisting.3}
+\contentsline {lstlisting}{\numberline {4}Module Implementation - Pi run}{4}{lstlisting.4}
+\contentsline {lstlisting}{\numberline {5}Module Implementation - Pi arctan}{5}{lstlisting.5}
+\contentsline {lstlisting}{\numberline {6}Client Implementation - Registry lookup}{5}{lstlisting.6}
+\contentsline {lstlisting}{\numberline {7}Client Implementation - Task run}{5}{lstlisting.7}
+\contentsline {lstlisting}{\numberline {8}Client Implementation - Fibonacci Beispiel}{5}{lstlisting.8}
+\contentsline {lstlisting}{\numberline {9}Server Implementation - run Methode}{6}{lstlisting.9}
+\contentsline {lstlisting}{\numberline {10}Proxy Implementation - LoadBalancer Interface}{6}{lstlisting.10}
