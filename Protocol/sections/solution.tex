@@ -167,22 +167,14 @@ public <T> T run(Task<T> task) throws RemoteException {
 \end{lstlisting}
 
 
+\subsection{Proxy}
+Nun kann ein Proxy zwischen Client und Server geschaltet werden.
 
-   } else gTransCur.rollback();
+\subsubsection{Idee}
+Der Proxy, welcher für den Client als ein einziger Server erscheint, dient dazu, die (mehreren-) Anfragen von Clients gleichmäßig auf registrierte Server zu verteilen.
 
+Umgesetzt wird das ganze mittels dem Round Robin Konzept, welches den Servern jeweils eine Aufgabe gibt. Sobald jeder Server einmal gearbeitet hat, wird der Zyklus zurückgesetzt und es wird wieder bei dem ersten Server angefangen.
 
-} catch(org.omg.CosTransactions.NoTransaction nte) {
-    System.err.println("NoTransaction: " + nte);
-    System.exit(1);
-} catch(org.omg.CosTransactions.SubtransactionsUnavailable e) {
-    System.err.println("Subtransactions Unavailable: " + e);
-    System.exit(1);
-} catch(org.omg.CosTransactions.HeuristicHazard e) {
-    System.err.println("HeuristicHazard: " + e);
-    System.exit(1);
-} catch(org.omg.CosTransactions.HeuristicMixed e) {
-    System.err.println("HeuristicMixed: " + e);
-    System.exit(1);
 }
 \end{lstlisting}
 
