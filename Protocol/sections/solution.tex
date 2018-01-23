@@ -43,6 +43,32 @@ public interface Task<T> {
 
 Dieses Interface ist dazu da, um jeden beliebigen Auftrag auszuführen, ohne die Implementierung (bzw. \textbf{run()}-Methode) zu kennen.
 
+\subsubsection{Fibonacci}
+Nun kann eine Tatsächliche Aufgabe implementiert werden, als erstes Beispiel wird Fibonacci verwendet.
+
+Die Klasse Fibonacci soll aus \textbf{Task<BigInteger>} erben da es ein Task mit dem Rückgabewert BigInteger ist, sowie aus \textbf{Serializable}, damit aus dem Memory void* ein serialisiertes byte array gebaut werden kann.
+
+Das serialisierte byte array kann somit über die Netzwerkschnittstelle gesendet werden.
+
+Für die Serilization wird außerdem eine statische, final Konstante aus einem 64bit Integer erstellt, welche quasi einen Identifier darstellt welcher der Serilisation erkennbar gibt, dass es sich um die selbe Implementierung einer Klasse handelt.
+
+Die \textbf{run()} Methode schaut folgendermaßen aus:
+
+\begin{lstlisting}[style=Java, caption=Module Implementation - Fibonacci run]
+@Override
+public BigInteger run() {
+	BigInteger previous = BigInteger.ONE;
+    BigInteger recent = BigInteger.ONE;
+    for (int i = 0; i < _digits; i++) {
+    	BigInteger temp = previous.add(recent);
+        previous = recent;
+        recent = temp;
+	}
+	return recent;
+}
+\end{lstlisting}
+
+
 \subsection{Client}
 
 
