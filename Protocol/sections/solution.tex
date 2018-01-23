@@ -7,6 +7,20 @@ Der Grundaufbau besteht aus einem Client Java Programm, welches über das Remote
 
 Diese Aufgabe ("Task") soll generisch sein, sodass verschiedene Implementationen von beliebigen Aufgaben ausgeführt werden können, wie beispielsweise die Berechnung von Pi oder der Fibonacci Nummer.
 
+Um die Aufgabe zu erweitern, wird ein Proxy zwischen die Clients und Server geschalten, welcher dann einzelne Anfragen der Clients mittels Round Robin Konzept gleichgerecht auf die einzelnen Server verteilt.
+
+\subsection{Projekt}
+Als Entwicklungsumgebung wird IntelliJ IDEA von JetBrains [1] verwendet. Es wird ein neues Projekt erstellt, mit folgenden packages/submodules:
+\begin{itemize}
+    \item \textbf{Client}: Client-side RMI implementierung
+    \item \textbf{Server}: Server-side RMI implementierung, inkl. Load Balancer
+    \item \textbf{Modules}: Shared-code, u.a. die generische \textbf{Task<T>} klasse, Pi und Fibonacci implementierungen, etc.
+\end{itemize}
+
+
+\subsection{Module}
+Bevor der Client oder Server implementiert werden kann, muss eine basis gebaut werden. Es werden Funktionen implementiert, welche Client \textbf{und} Server verwenden. Unter anderem gehört dazu:
+
 \subsection{Client}
 
 
