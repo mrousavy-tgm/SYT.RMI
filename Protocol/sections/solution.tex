@@ -175,6 +175,33 @@ Der Proxy, welcher für den Client als ein einziger Server erscheint, dient dazu
 
 Umgesetzt wird das ganze mittels dem Round Robin Konzept, welches den Servern jeweils eine Aufgabe gibt. Sobald jeder Server einmal gearbeitet hat, wird der Zyklus zurückgesetzt und es wird wieder bei dem ersten Server angefangen.
 
+\subsubsection{Implementierung}
+Es wird ein Interface definiert, welches den Round Robin Load Balancer Proxy beschreibt.
+
+\begin{lstlisting}[style=Java, caption=Proxy Implementation - LoadBalancer Interface]
+public interface LoadBalancer extends Compute {
+    void add(Processor processor) throws RemoteException;
+	boolean remove(Processor processor) throws RemoteException;
 }
 \end{lstlisting}
+
+Das Interface erweitert Compute, da es ja Aufgaben (Tasks) berechnet (run).
+
+Außerdem ist deutlich erkennbar, dass das Interface exakt wie ein normaler Server ausschaut, da Clients nicht wissen müssen, dass Sie mit einem Proxy kommunizieren.
+
+Als nächstes wird das Interface in einer Klasse \textbf{"Proxy"} implementiert.
+Es werden folgende Objekt-Member erstellt:
+
+\begin{itemize}
+	\item _logger: Ein beliebiger Logger, hierbei wird er zu dem System.out Stream weitergeleitet.
+	\item _processors: Eine List<Processor> welche alle registrierten Prozessoren (Server) speichert.
+	\item _iter: Ein Iterator<Processor> zu der Liste aus Prozessoren, welcher den Fortschritt in einem Round Robin Zyklus speichert.
+\end{itemize}
+
+\subsection{Glossar}
+\begin{enumerate}
+    \item \href{https://www.jetbrains.com/idea}{\color{blue}\underline{''IntelliJ IDEA - JetBrains''}}
+    \item ''Stub:'' eine Schnittstelle zu Funktionen oder Prozeduren, welche auf einem anderen System implementiert sind.
+\end{enumerate}
+
 
