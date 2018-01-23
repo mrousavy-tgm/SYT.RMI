@@ -112,33 +112,37 @@ public static BigDecimal arctan(int inverseX,
     return result;
 }
 \end{lstlisting}
+
 \subsection{Client}
 
+Es wird ein simpler Client implementiert, welcher den Server (bzw. Proxy) mittels RMI kontaktieren soll.
 
-Es kann gut möglich sein, dass Lehrkräfte hier auch noch andere Eckpunkte explizit verlangen. Diese können dann in der selben Hierarchiestufe wie die \textit{\nameref{sec:Ergebnisse}} eingeordnet werden. Viel Spass nun mit einer kleinen Übersicht von \LaTeX-Elementen.
+Als implementierung muss in der System Registry nach dem Stub [2] gesucht werden, welcher die Schnittstelle zu dem Server (bzw. Proxy) darstellt.
 
-\subsection{Tabelle}
-\renewcommand{\arraystretch}{1.5}
-\begin{table}[!h]
-	\center
-	\begin{tabular}{ | @{\hspace{3mm}} c @{\hspace{3mm}} | @{\hspace{3mm}} l @{\hspace{3mm}} | }
-		\hline Header & Kopf\\ \hline\hline
-		\textbf{Lorem} & Ipsum dolor sit amet, consetetur sadipscing elitr\\ \hline
-		\textbf{Ipsum} & At vero eos et accusam et justo duo dolores et ea rebum.\\
-			& Stet clita kasd gubergren, no sea takimata sanctus\\ \hline
-		\textbf{Dolor} & Consetetur sadipscing elitr, sed diam nonumy\\\hline
-	\end{tabular}
-	\caption{Lorem ipsum dolor sit amet \cite{tanenbaum2007verteilte}}
-	\label{methoden}
-\end{table}
+\begin{lstlisting}[style=Java, caption=Client Implementation - Registry lookup]
+public Client(String host, String stubName) throws RemoteException, NotBoundException {
+    _registry = LocateRegistry.getRegistry(host);
+    _compute = (Compute)_registry.lookup(stubName);
+}
+\end{lstlisting}
 
-\subsection{Aufzählung}
 
-\begin{itemize}
-	\item \textbf{Lorem ipsum:} dolor sit amet, consetetur sadipscing elitr
-	\item sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat
-	\item ut labore et dolore magna aliquyam erat, sed diam voluptua
-\end{itemize}
+Der Client kann mit dem gefundenen Stub nun jeden beliebigen Task ausführen:
+
+\begin{lstlisting}[style=Java, caption=Client Implementation - Task run]
+public <T> T run(Task<T> task) throws RemoteException {
+    return _compute.run(task);
+}
+\end{lstlisting}
+
+\subsubsection{Beispiel}
+
+Als Beispiel kann dieser Client die Fibonacci Number berechnen lassen:
+
+\begin{lstlisting}[style=Java, caption=Client Implementation - Fibonacci Beispiel]
+Fibonacci fibonacci = new Fibonacci(5);  // Fibonacci Number bis 5
+BigInteger number = client.run(fibonacci);
+\end{lstlisting}
 
 \subsection{Code}
 
