@@ -31,6 +31,18 @@ public interface Compute extends Remote, Serializable {
     <T> T run(Task<T> t) throws RemoteException;
 }
 \end{lstlisting}
+
+\subsubsection{Task}
+Es muss ein Generisches Interface definiert werden, welches auch nur eine \textbf{run()} Funktion aufweist:
+
+\begin{lstlisting}[style=Java, caption=Module Implementation - Task interface]
+public interface Task<T> {
+	T run();
+}
+\end{lstlisting}
+
+Dieses Interface ist dazu da, um jeden beliebigen Auftrag auszuführen, ohne die Implementierung (bzw. \textbf{run()}-Methode) zu kennen.
+
 \subsection{Client}
 
 
