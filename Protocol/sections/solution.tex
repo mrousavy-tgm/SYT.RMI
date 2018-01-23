@@ -21,6 +21,16 @@ Als Entwicklungsumgebung wird IntelliJ IDEA von JetBrains [1] verwendet. Es wird
 \subsection{Module}
 Bevor der Client oder Server implementiert werden kann, muss eine basis gebaut werden. Es werden Funktionen implementiert, welche Client \textbf{und} Server verwenden. Unter anderem gehört dazu:
 
+\subsubsection{Compute}
+Es muss ein Interface definiert werden, welches als Stub [1] dient, also die Schnittstelle zur Implementierung für den \textbf{Task} auf einer anderen Codebase.
+
+Die Implementierung ist sehr simpel, es besteht aus einem Interface mit der \textbf{run()} Funktion:
+
+\begin{lstlisting}[style=Java, caption=Module Implementation - Compute interface]
+public interface Compute extends Remote, Serializable {
+    <T> T run(Task<T> t) throws RemoteException;
+}
+\end{lstlisting}
 \subsection{Client}
 
 
