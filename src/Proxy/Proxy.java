@@ -35,14 +35,12 @@ public class Proxy implements LoadBalancer {
 
     @Override
     public boolean remove(Processor processor) throws RemoteException {
-        try {
-            boolean result = _processors.remove(processor);
-            _iter = _processors.iterator();
-            return result;
-        } finally {
+        boolean success = _processors.remove(processor);
+        _iter = _processors.iterator();
+        if(success)
             _logger.Log(Logger.Severity.Info,
                     "Removed Server: \"" + processor + "\"");
-        }
+        return success;
     }
 
     @Override
