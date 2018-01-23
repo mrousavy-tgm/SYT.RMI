@@ -28,6 +28,7 @@ public class Proxy implements LoadBalancer {
     @Override
     public void add(Processor processor) throws RemoteException {
         _processors.add(processor);
+        _iter = _processors.iterator();
         _logger.Log(Logger.Severity.Info,
                 "Registered new Server: \"" + processor + "\"");
     }
@@ -35,7 +36,9 @@ public class Proxy implements LoadBalancer {
     @Override
     public boolean remove(Processor processor) throws RemoteException {
         try {
-            return _processors.remove(processor);
+            boolean result = _processors.remove(processor);
+            _iter = _processors.iterator();
+            return result;
         } finally {
             _logger.Log(Logger.Severity.Info,
                     "Removed Server: \"" + processor + "\"");
