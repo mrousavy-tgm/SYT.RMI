@@ -17,6 +17,7 @@ Als Entwicklungsumgebung wird IntelliJ IDEA von JetBrains [1] verwendet. Es wird
     \item \textbf{Modules}: Shared-code, u.a. die generische \textbf{Task<T>} klasse, Pi und Fibonacci implementierungen, etc.
 \end{itemize}
 
+\clearpage
 
 \subsection{Module}
 Bevor der Client oder Server implementiert werden kann, muss eine basis gebaut werden. Es werden Funktionen implementiert, welche Client \textbf{und} Server verwenden. Unter anderem gehört dazu:
@@ -113,6 +114,8 @@ public static BigDecimal arctan(int inverseX,
 }
 \end{lstlisting}
 
+\clearpage
+
 \subsection{Client}
 
 Es wird ein simpler Client implementiert, welcher den Server (bzw. Proxy) mittels RMI kontaktieren soll.
@@ -144,6 +147,8 @@ Fibonacci fibonacci = new Fibonacci(5);  // Fibonacci Number bis 5
 BigInteger number = client.run(fibonacci);
 \end{lstlisting}
 
+\clearpage
+
 \subsection{Server}
 Es wird ein basis-Interface definiert, welches den Zugriff für den Proxy später vereinfachen wird. Das Interface wird \textbf{Processor} genannt, und erweitert die \textbf{Compute} Klasse. 
 Der Interface definiert nur eine Funktion: \textbf{busy()}, welche einen boolean wert zurückliefer.
@@ -166,6 +171,7 @@ public <T> T run(Task<T> task) throws RemoteException {
 }
 \end{lstlisting}
 
+\clearpage
 
 \subsection{Proxy}
 Nun kann ein Proxy zwischen Client und Server geschaltet werden.
@@ -244,6 +250,8 @@ Danach wird ein Prozessor (Server) aus der Liste geholt, und der Iterator weiter
 Falls dieser Prozessor nicht gerade beschäftigt ist, kann der Task an den Prozessor weitergereicht werden, und auf ein Ergebnis gewartet werden.
 
 Der Proxy kann auch so konfiguriert werden, dass er den Prozessoren unabhängig davon ob sie beschäftigt sind oder nicht, die Tasks weitergibt, wodurch aber viel beschäftigte Server eine Lange Arbeitskette (Task Queue/Stack) haben könnten.
+
+\clearpage
 
 \subsection{Glossar}
 \begin{enumerate}
