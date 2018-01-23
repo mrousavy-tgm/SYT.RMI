@@ -198,6 +198,29 @@ Es werden folgende Objekt-Member erstellt:
 	\item iter: Ein Iterator<Processor> zu der Liste aus Prozessoren, welcher den Fortschritt in einem Round Robin Zyklus speichert.
 \end{itemize}
 
+Die Methoden \textbf{add()} und \textbf{remove()} sind sehr trivial, da sie hierbei nur die processors liste bearbeiten, und den iterator zurücksetzen;
+
+\begin{lstlisting}[style=Java, caption=Proxy Implementation - Proxy::add]
+@Override
+public void add(Processor processor) throws RemoteException {
+    _processors.add(processor);
+    _iter = _processors.iterator();
+    _logger.Log(Logger.Severity.Info,
+            "Registered new Server: \"" + processor + "\"");
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=Java, caption=Proxy Implementation - Proxy::remove]
+@Override
+public boolean remove(Processor processor) throws RemoteException {
+    boolean success = _processors.remove(processor);
+    _iter = _processors.iterator();
+    if(success)
+        _logger.Log(Logger.Severity.Info,
+                "Removed Server: \"" + processor + "\"");
+    return success;
+}
+\end{lstlisting}
 \subsection{Glossar}
 \begin{enumerate}
     \item \href{https://www.jetbrains.com/idea}{\color{blue}\underline{''IntelliJ IDEA - JetBrains''}}
