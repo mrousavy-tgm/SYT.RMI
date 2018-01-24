@@ -2,6 +2,7 @@ package Proxy;
 
 import JavaLogger.JLogger;
 import JavaLogger.Logger;
+import Modules.Helper;
 import Modules.Statics;
 import Server.Processor;
 import Modules.Task;
@@ -25,26 +26,15 @@ public class Proxy implements LoadBalancer {
     private Registry _registry;
     private List<Processor> _processors;
     private Iterator<Processor> _iter;
+    private LoadBalancer _stub;
 
-    public Proxy(int port) throws RemoteException {
+    public Proxy(String name, int port) throws RemoteException {
         _processors = new ArrayList<>();
         _iter = _processors.iterator();
 
-        LoadBalancer stub =
-                (LoadBalancer) UnicastRemoteObject.exportObject(this, port);
-        _registry = OpenRegistry(port);
-        _registry.rebind(Statics.LOAD_BALANCER, stub);
-        _registry.rebind(Statics.COMPUTE, stub);
-    }
-
-    private static Registry OpenRegistry(int port) throws RemoteException {
-        try {
-            return LocateRegistry.getRegistry(port);
-        } catch (RemoteException e) {
-            _logger.Log(Logger.Severity.Info, "No Registry found, " +
-                    "creating new one..");
-            return LocateRegistry.createRegistry(port);
-        }
+        _stub = (LoadBalancer) UnicastRemoteObject.exportObject(this, port);
+        _registry = LocateRegistry.createRegistry(port);
+        _registry.rebind(name, _stub);
     }
 
     @Override

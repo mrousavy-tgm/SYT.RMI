@@ -2,6 +2,7 @@ package Server;
 
 import JavaLogger.JLogger;
 import JavaLogger.Logger;
+import Modules.Helper;
 import Proxy.LoadBalancer;
 import Modules.Statics;
 
@@ -14,45 +15,20 @@ import java.security.AccessControlException;
 public class Main {
     private static Logger<String> _logger = JLogger.Instance;
 
-    private static void SecurityManagerCheck() {
-        if (System.getSecurityManager() == null) {
-            System.setSecurityManager(new SecurityManager());
-            _logger.Log(Logger.Severity.Info, "No Security Manager available, " +
-                    "created a new one.");
-        }
-    }
-
-    private static Registry OpenRegistry(String name, int port) throws RemoteException {
-        try {
-            return LocateRegistry.getRegistry(name, port);
-        } catch (RemoteException e) {
-            _logger.Log(Logger.Severity.Info, "No Registry found, " +
-                    "creating new one..");
-            return LocateRegistry.createRegistry(port);
-        }
-    }
-
-    private static void HostnameCheck() {
-        try {
-            String hostname = System.getProperties().getProperty("java.rmi.server.hostname");
-            _logger.Log(Logger.Severity.Debug, "RMI running on hostname: " + hostname);
-        } catch (AccessControlException ex) {
-            _logger.Log(Logger.Severity.Error, "Access denied - Could not read java.rmi.server.hostname!");
-        }
-    }
 
     public static void main(String args[]) throws RemoteException {
         int port = Statics.PORT;
+        String ip = "127.0.0.1";
 
-        SecurityManagerCheck();
-        HostnameCheck();
+        Helper.SecurityManagerCheck();
+        Helper.HostnameCheck();
 
         try {
             Processor processor = new Server("Server1", port);
             _logger.Log(Logger.Severity.Info, "Server successfully exported!");
 
             _logger.Log(Logger.Severity.Info, "Looking up load balancer..");
-            Registry registry = OpenRegistry(Statics.LOAD_BALANCER, port);
+            Registry registry = Helper.OpenRegistry(ip, port);
             LoadBalancer balancer = (LoadBalancer) registry.lookup(Statics.LOAD_BALANCER);
 
             balancer.add(processor);
