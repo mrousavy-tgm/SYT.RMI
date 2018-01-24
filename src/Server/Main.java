@@ -32,20 +32,23 @@ public class Main {
             return LocateRegistry.createRegistry(port);
         }
     }
-
-    public static void main(String args[]) throws RemoteException {
-        int port = PORT;
-
-        SecurityManagerCheck();
-
+    private static void HostnameCheck() {
         try {
             String hostname = System.getProperties().getProperty("java.rmi.server.hostname");
             _logger.Log(Logger.Severity.Debug, "RMI running on hostname: " + hostname);
         } catch (AccessControlException ex) {
             _logger.Log(Logger.Severity.Error, "Access denied - Could not read java.rmi.server.hostname!");
         }
+    }
+
+    public static void main(String args[]) throws RemoteException {
+        int port = PORT;
+
+        SecurityManagerCheck();
+        HostnameCheck();
 
         try {
+            //Processor processor = new Server();
             _logger.Log(Logger.Severity.Info, "Looking up load balancer..");
             Registry registry = OpenRegistry(port);
             LoadBalancer balancer = (LoadBalancer) registry.lookup(Statics.LOAD_BALANCER);
