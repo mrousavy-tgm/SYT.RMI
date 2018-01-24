@@ -48,12 +48,14 @@ public class Main {
         HostnameCheck();
 
         try {
-            //Processor processor = new Server();
+            Processor processor = new Server("Server1", port);
+            _logger.Log(Logger.Severity.Info, "Server successfully exported!");
+
             _logger.Log(Logger.Severity.Info, "Looking up load balancer..");
             Registry registry = OpenRegistry(port);
             LoadBalancer balancer = (LoadBalancer) registry.lookup(Statics.LOAD_BALANCER);
 
-            balancer.add(new Server());
+            balancer.add(processor);
             _logger.Log(Logger.Severity.Info, "Processor successfully registered!");
         } catch (NotBoundException e) {
             _logger.Log(e);

@@ -53,7 +53,7 @@ public class Main {
 
             for (int i = 0; i < 4; i++) {
                 _logger.Log(Logger.Severity.Debug, "Creating Processor #" + i);
-                balancer.add(new Server());
+                balancer.add(new Server("Server" + i, port));
             }
 
             ShutdownHook(balancer);
