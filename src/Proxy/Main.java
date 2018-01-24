@@ -2,14 +2,8 @@ package Proxy;
 
 import JavaLogger.JLogger;
 import JavaLogger.Logger;
-import Modules.Statics;
 import Server.Server;
 
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
 import java.security.AccessControlException;
 
 public class Main {
@@ -25,16 +19,6 @@ public class Main {
         }
     }
 
-    private static Registry OpenRegistry(int port) throws RemoteException {
-        try {
-            return LocateRegistry.getRegistry(port);
-        } catch (RemoteException e) {
-            _logger.Log(Logger.Severity.Info, "No Registry found, " +
-                    "creating new one..");
-            return LocateRegistry.createRegistry(port);
-        }
-    }
-
     private static void HostnameCheck() {
         try {
             String hostname = System.getProperties().getProperty("java.rmi.server.hostname");
@@ -44,14 +28,14 @@ public class Main {
         }
     }
 
-    private static void ShutdownHook(Registry registry) {
+    private static void ShutdownHook(LoadBalancer balancer) {
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
                 try {
-                    registry.unbind(Statics.LOAD_BALANCER);
-                    registry.unbind(Statics.COMPUTE);
+                    balancer.shutdown();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    _logger.Log(e);
                 }
             }
         });
@@ -63,10 +47,7 @@ public class Main {
         int port = PORT;
 
         try {
-            LoadBalancer balancer = new Proxy();
-            LoadBalancer stub =
-                    (LoadBalancer) UnicastRemoteObject.exportObject(balancer, 0);
-            Registry registry = OpenRegistry(port);
+            LoadBalancer balancer = new Proxy(port);
             _logger.Log(Logger.Severity.Info,
                     "Balancer exported to registry.");
 
@@ -75,12 +56,11 @@ public class Main {
                 balancer.add(new Server());
             }
 
-            registry.rebind(Statics.LOAD_BALANCER, stub);
-            registry.rebind(Statics.COMPUTE, stub);
-            ShutdownHook(registry);
+            ShutdownHook(balancer);
             _logger.Log(Logger.Severity.Info,
                     "Round robin load balancer successfully bound.");
         } catch (Exception e) {
+            e.printStackTrace();
             _logger.Log(e);
         }
     }
