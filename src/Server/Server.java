@@ -4,6 +4,9 @@ import JavaLogger.JLogger;
 import JavaLogger.Logger;
 import Modules.Compute;
 import Modules.Task;
+import Proxy.LoadBalancer;
+
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -15,8 +18,13 @@ public class Server implements Processor {
     private boolean _busy = false;
     private Compute _stub;
     private Registry _registry;
+    private LoadBalancer _balancer;
+    private String _name;
 
-    public Server(String name, int port) throws RemoteException {
+    public Server(String name, int port)
+            throws RemoteException {
+        _name = name;
+
         _stub = (Compute) UnicastRemoteObject.exportObject(this, port); //8001
         _registry = LocateRegistry.createRegistry(port);
         _registry.rebind(name, _stub);
@@ -38,6 +46,17 @@ public class Server implements Processor {
             return result;
         } finally {
             _busy = false;
+        }
+    }
+
+    @Override
+    public void shutdown() throws RemoteException {
+        try {
+            _registry.unbind(_name);
+        } catch (NotBoundException e) {
+            e.printStackTrace();
+        } finally {
+            UnicastRemoteObject.unexportObject(this, true);
         }
     }
 }
