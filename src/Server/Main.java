@@ -12,7 +12,6 @@ import java.rmi.registry.Registry;
 import java.security.AccessControlException;
 
 public class Main {
-    private static final int PORT = 1099;
     private static Logger<String> _logger = JLogger.Instance;
 
     private static void SecurityManagerCheck() {
@@ -23,15 +22,16 @@ public class Main {
         }
     }
 
-    private static Registry OpenRegistry(int port) throws RemoteException {
+    private static Registry OpenRegistry(String name, int port) throws RemoteException {
         try {
-            return LocateRegistry.getRegistry(port);
+            return LocateRegistry.getRegistry(name, port);
         } catch (RemoteException e) {
             _logger.Log(Logger.Severity.Info, "No Registry found, " +
                     "creating new one..");
             return LocateRegistry.createRegistry(port);
         }
     }
+
     private static void HostnameCheck() {
         try {
             String hostname = System.getProperties().getProperty("java.rmi.server.hostname");
@@ -42,7 +42,7 @@ public class Main {
     }
 
     public static void main(String args[]) throws RemoteException {
-        int port = PORT;
+        int port = Statics.PORT;
 
         SecurityManagerCheck();
         HostnameCheck();
@@ -52,7 +52,7 @@ public class Main {
             _logger.Log(Logger.Severity.Info, "Server successfully exported!");
 
             _logger.Log(Logger.Severity.Info, "Looking up load balancer..");
-            Registry registry = OpenRegistry(port);
+            Registry registry = OpenRegistry(Statics.LOAD_BALANCER, port);
             LoadBalancer balancer = (LoadBalancer) registry.lookup(Statics.LOAD_BALANCER);
 
             balancer.add(processor);
