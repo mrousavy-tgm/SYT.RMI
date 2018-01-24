@@ -5,6 +5,7 @@ import JavaLogger.Logger;
 import Modules.Statics;
 import Server.Server;
 
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -43,6 +44,19 @@ public class Main {
         }
     }
 
+    private static void ShutdownHook(Registry registry) {
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                try {
+                    registry.unbind(Statics.LOAD_BALANCER);
+                    registry.unbind(Statics.COMPUTE);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     public static void main(String[] args) {
         SecurityManagerCheck();
         HostnameCheck();
@@ -63,6 +77,7 @@ public class Main {
 
             registry.rebind(Statics.LOAD_BALANCER, stub);
             registry.rebind(Statics.COMPUTE, stub);
+            ShutdownHook(registry);
             _logger.Log(Logger.Severity.Info,
                     "Round robin load balancer successfully bound.");
         } catch (Exception e) {
