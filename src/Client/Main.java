@@ -19,7 +19,7 @@ public class Main {
     public static void main(String[] args) {
         Logger<String> logger = JLogger.Instance;
 
-        String host;
+        String host = null;
         int port = 1099;
         TaskType type = TaskType.Fibonacci;
         try {
@@ -29,7 +29,7 @@ public class Main {
         } catch (Exception e) {
             logger.Log(Logger.Severity.Error, "Invalid program args format!");
             logger.Log(e);
-            throw new IllegalArgumentException("Invalid program args!");
+            //throw new IllegalArgumentException("Invalid program args!");
         }
 
         try {
