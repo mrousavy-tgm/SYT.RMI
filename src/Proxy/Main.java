@@ -23,12 +23,13 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        SecurityManagerCheck();
-        HostnameCheck();
+        Helper.SecurityManagerCheck();
+        Helper.HostnameCheck();
         int port = PORT;
+        String name = Statics.LOAD_BALANCER;
 
         try {
-            LoadBalancer balancer = new Proxy(port);
+            LoadBalancer balancer = new Proxy(name, port);
             _logger.Log(Logger.Severity.Info,
                     "Balancer exported to registry.");
 
