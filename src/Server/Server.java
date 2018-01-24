@@ -3,6 +3,7 @@ package Server;
 import JavaLogger.JLogger;
 import JavaLogger.Logger;
 import Modules.Compute;
+import Modules.Helper;
 import Modules.Task;
 import Proxy.LoadBalancer;
 
@@ -26,7 +27,7 @@ public class Server implements Processor {
         _name = name;
 
         _stub = (Compute) UnicastRemoteObject.exportObject(this, port); //8001
-        _registry = LocateRegistry.createRegistry(port);
+        _registry = Helper.OpenRegistry(port);
         _registry.rebind(name, _stub);
     }
 
@@ -41,8 +42,8 @@ public class Server implements Processor {
             _busy = true;
             T result = task.run();
             JLogger.Instance.Log(Logger.Severity.Info,
-                    "Executed Task \"" + task.toString() + "\", at " +
-                            new Date().toString());
+                    _name + ": Executed Task \"" + task.toString() +
+                            "\", at " + new Date().toString());
             return result;
         } finally {
             _busy = false;

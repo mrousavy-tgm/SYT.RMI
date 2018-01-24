@@ -2,6 +2,8 @@ package Server;
 
 import Modules.Compute;
 
+import java.rmi.RemoteException;
+
 public interface Processor extends Compute {
-    boolean busy();
+    boolean busy() throws RemoteException;
 }
