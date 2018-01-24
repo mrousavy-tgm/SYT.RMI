@@ -37,7 +37,6 @@ public class Main {
         int port = PORT;
 
         SecurityManagerCheck();
-        Registry registry = OpenRegistry(port);
 
         try {
             String hostname = System.getProperties().getProperty("java.rmi.server.hostname");
@@ -47,15 +46,12 @@ public class Main {
         }
 
         try {
-            _logger.Log(Logger.Severity.Debug, "Starting load balancer..");
+            _logger.Log(Logger.Severity.Info, "Looking up load balancer..");
+            Registry registry = OpenRegistry(port);
             LoadBalancer balancer = (LoadBalancer) registry.lookup(Statics.LOAD_BALANCER);
 
-            for (int i = 0; i < 4; i++) {
-                _logger.Log(Logger.Severity.Debug, "Creating Processor #" + i);
-                balancer.add(new Server());
-            }
-
-            _logger.Log(Logger.Severity.Debug, "LoadBalancer successfully initialized!");
+            balancer.add(new Server());
+            _logger.Log(Logger.Severity.Info, "Processor successfully registered!");
         } catch (NotBoundException e) {
             _logger.Log(e);
         }
