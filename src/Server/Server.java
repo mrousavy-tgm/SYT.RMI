@@ -60,4 +60,9 @@ public class Server implements Processor {
             UnicastRemoteObject.unexportObject(this, true);
         }
     }
+
+    @Override
+    public String toString() {
+        return _name + " (" + Integer.toHexString(this.hashCode()) + ")";
+    }
 }

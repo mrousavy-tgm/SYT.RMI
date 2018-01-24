@@ -75,7 +75,7 @@ public class Proxy implements LoadBalancer {
         //      .filter(p -> !p.busy()).collect(Collectors.toList());
 
         do {
-            if (_iter.hasNext())
+            if (!_iter.hasNext())
                 _iter = _processors.iterator();
 
             Processor p = _iter.next();
