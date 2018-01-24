@@ -21,8 +21,8 @@ public class Client {
     /*
      * Create a new Client and initialize the Registry
      *
-     * @param host the given host name to get the registry from
-     * @param stubName The name of the compute stub in the registry
+     * @param host the given host name to get the registry from the Server
+     * @param stubName The name of the compute stub (Server) in the registry
      * @author  Marc Rousavy
      * @version 1.0
      */
